@@ -67,10 +67,23 @@ The disk model is excellent for visualizations, but the maths behind it are nume
 
 As both this and the disk model represent the same thing, it seems clear there should be some mapping between the two - and indeed it's even simpler than you would expect. The disk model is merely the projection of the hyperboloid onto it's center, something again hard to visualize without a graphic: 
 
-# insert the hyerpboloid/disk mapping graphic thingy
+# insert the hyperpboloid/disk mapping graphic thingy
 
 This has excellent properties for visualition - any model trained on the hyperboloid can easily be mapped to a disk for ease of visualization, something we will make extensive use of later on. 
 
 ## Hyperbolic Neural Networks
 
-Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. 
+Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. To actually embed these trees however we need to learn some mapping, from the vertices of the tree to points in hyperbolic space. Rik Sarkar has an excellent paper on a simple algorithm to do this for an arbitrary tree, but the method is restricted to abstract structures. It also considers purely minimizing distortion of the tree - which again in an abstract case is useful but in the real world there's often other characteristics to consider. Additionally there are many use cases where a given graph may exhibit some properties of a tree but not be perfectly so - an aspect well studied and typically measured by Gromov's $\delta$-hyperbolicity which seeks to define to what extent a given space (or graph) is hyperbolic by measuring, for any four points $x, y, z, w$ in that space: 
+
+$(x, z)_w >= min((x,y)_w, (y,z)_w) - \delta
+such that $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z)). 
+
+Which also previews an alternative definition based on the triangle inequality, but again the math becomes more obsucre. 
+
+With all that in mind, lets assume we have some tree structure and want to embed it to a hyperbolic space. While at first glance you might say great, lets just use a hyperbolic distance metric on a standard autoencoder architecture and call it a day, that unfortunately misses a few key steps. Chami et al's fantastic paper covers them all in detail, but here we'll still try to describe some of the key steps. 
+
+# Euclidean to Hyperbolic Mappings
+
+
+
+### add citation for Sarkar algorithm, gromov hyperbolicity, chami's HGCN
