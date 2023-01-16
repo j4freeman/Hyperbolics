@@ -41,8 +41,36 @@ So, with all that out of the way, we can roughly conceive of what hyperbolic geo
 
 # Hyperbolic spaces grow exponentially
 
-# The Poincare Model
+So, through all the above we've noted two things: Euclidean space isn't our only option, and trees grow exponentially, faster than Euclidean space does. As we've been going on and on about hyperbolics, it would seem natural to examine the formula for the area of a circle in a hyperbolic space: 
+
+$\pi R^2 R (cosh(2r/R) - 1)$
+
+Now you may be saying - well that just adds a cosine term, that's hardly useful. And if that was a standard cosine, you'd be right, but we're looking at it's hyperbolic variant which has an exceedingly interesting property, it's just a decomposition of the standard exponential: $e^x = sinh(x) + cosh(x)$ - both the hyperbolic sine and cosines are exponential curves. Given that, it becomes clear that the area of the hyperbolic space grows exponentially with its radius, just as the trees we're looking at do. 
+
+# The Poincaré Disk Model
+
+Now that we see we can fit the tree into a hyperbolic space, we need to question how to represent them. Representing a Euclidean space is easy enough - we percieve our world as one. An elliptic space is likewise easy, because we see plenty of spheres in our world too. Hyperbolic space is different however, it grows faster than Euclidean space, and in the same sense, the hyperbolic plane is larger than the Euclidean, even though both are infinite. 
+
+One of the earliest (and easiest to visualize) attempts at visualizing this was done by Henri Poincaré in the late 19th century. The actual maths behind the representation is again complex and past the scope of what we can cover here, but a key visualization lets us understand the exponential growth:
+
+### insert graphic of a tesselation
+
+Critically - each colored region in the disk has the same hyperbolic area - with the center of the disk having the least density and density increasing exponentially towards the edges. 
 
 # The Hyperboloid Model
 
+The disk model is excellent for visualizations, but the maths behind it are numerically unstable. Another model of hyperbolic geometry, the Hyperboloid model proposed by Minkowski, instead of representing the plane on a disk represents it on the upper plane of a $n+1$ dimensional hyperboloid, and if you like myself can't for the life of you remember what a hyperboloid looks like, well, here you are:
+
+### insert graphic of a hyperboloid
+
+# Relating the two
+
+As both this and the disk model represent the same thing, it seems clear there should be some mapping between the two - and indeed it's even simpler than you would expect. The disk model is merely the projection of the hyperboloid onto it's center, something again hard to visualize without a graphic: 
+
+### insert the hyerpboloid/disk mapping graphic thingy
+
+This has excellent properties for visualition - any model trained on the hyperboloid can easily be mapped to a disk for ease of visualization, something we will make extensive use of later on. 
+
 ## Hyperbolic Neural Networks
+
+Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. 
