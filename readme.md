@@ -75,8 +75,9 @@ This has excellent properties for visualition - any model trained on the hyperbo
 
 Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. To actually embed these trees however we need to learn some mapping, from the vertices of the tree to points in hyperbolic space. Rik Sarkar has an excellent paper on a simple algorithm to do this for an arbitrary tree, but the method is restricted to abstract structures. It also considers purely minimizing distortion of the tree - which again in an abstract case is useful but in the real world there's often other characteristics to consider. Additionally there are many use cases where a given graph may exhibit some properties of a tree but not be perfectly so - an aspect well studied and typically measured by Gromov's $\delta$-hyperbolicity which seeks to define to what extent a given space (or graph) is hyperbolic by measuring, for any four points $x, y, z, w$ in that space: 
 
-$(x, z)_w >= min((x,y)_w, (y,z)_w) - \delta
-such that $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z)). 
+$(x, z)_w >= min((x,y)_w, (y,z)_w) - \delta$
+
+such that: $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z)). $
 
 Which also previews an alternative definition based on the triangle inequality, but again the math becomes more obsucre. 
 
