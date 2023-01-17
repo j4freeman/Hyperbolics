@@ -81,10 +81,27 @@ such that: $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z)). $
 
 Which also previews an alternative definition based on the triangle inequality, but again the math becomes more obsucre. 
 
-With all that in mind, lets assume we have some tree structure and want to embed it to a hyperbolic space. While at first glance you might say great, lets just use a hyperbolic distance metric on a standard autoencoder architecture and call it a day, that unfortunately misses a few key steps. Chami et al's fantastic paper covers them all in detail, but here we'll still try to describe some of the key steps. 
+With all that in mind, lets assume we have some tree structure and want to embed it to a hyperbolic space. While at first glance you might say great, lets just use a hyperbolic distance metric on a standard autoencoder architecture and call it a day, that runs into an issue right away: Euclidean features, coordinate systems, or what have you need to be mapped to their Hyperbolic equivalents. Chami et al's fantastic paper covers them all in detail, but here we'll still try to describe some of the key steps. 
 
-# Euclidean to Hyperbolic Mappings
+# Euclidean <-> Hyperbolic Maps
 
+We can map arbitrary features from Euclidean to Hyperbolic spaces and vice versa by two mappings: the exponential map which maps from Euclidean to Hyperbolic spaces, and the logarithmic map which does the opposite. In the case of the hyperboloid model those are (in the syntax used by Chami): 
+
+$exp_x^K(v) = cosh(\frac{||v||_L}{\sqrt{K}})x + \sqrt{K} sinh(\frac{||v||_L}{\sqrt{K}})\frac{v}{||v||_L}$
+
+$log_x^K(y) = d_L^K(x,y)\frac{y+\frac{1}{K}|x,y|_L x}{||y + \frac{1}{K} |x,y|_Lx||_L}$
+
+where: 
+
+Hyperbolic distance = $ d_L^K(x,y) = sqrt{K} arcosh(\frac{-|x,y|_L}{K}) $
+
+Minkowksi inner product = $|x,y|_L = -x_0y_0 + \sum_{i=1}^n x_iy_i$
+
+Now you may notice two extra parameters here we haven't defined - while $v$ is our vector to map, our exponential and logarithmic maps also require a $K$ and a $x$. $K$ is merely derived from the (as we recall always negative) curvature of our space, $c = -1/K$. $x$ is however more complicated, and has to do with the nature of the logarithmic and exponential mappings themselves. 
+
+Consider the Earth, which as we've discussed is not Euclidean given it's spherical nature. This would come as a surprise to a child who has yet to get an education, as to our perception the world appears quite Euclidean - we do not see this curvature around us in normal environments. That gives light to a key aspect of these spaces, the idea of a tangent space. Locally about any point on an elliptical space, the region will appear Euclidean - we refer to this as the tangent space. The fact that this tangent space is Euclidean unifies the class of spaces called manifolds, of which basic Euclidean space, elliptical, and hyperbolic spaces are all part of. That should tell us enough - if we stood in a hyperbolic space we'd observe the exact same subjective Euclidean-ness all around us. 
+
+That's all a convoluted way of motivating what $x$ actually is - $x$ is the center point at which we observe the tangent space. That is to say, for each tranformation we from the hyperbolic to Euclidean or vice versa, we must choose a point on which to center our tangent space on. 
 
 
 ### add citation for Sarkar algorithm, gromov hyperbolicity, chami's HGCN
