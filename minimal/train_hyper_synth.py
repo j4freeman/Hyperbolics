@@ -96,7 +96,7 @@ fermis = []
 fig = plt.figure(figsize=(10, 10))
 ax = fig.add_subplot(111)
 
-epochs = 500
+epochs = 1500
 
 optimizer = optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-5)
 
