@@ -9,7 +9,7 @@ from layers.layers import HyperbolicGraphConvolution, HypLinear
 
 
 class HGCN(nn.Module):
-    def __init__(self, nfeat, nhid, nhid2, nhid3, nout, dropout, init_c=1/3, hid_c=1/2, out_c=1, use_bias=True, use_att=False, local_agg=False):
+    def __init__(self, nfeat, nhid, nhid2, nout, dropout, init_c=1/3, hid_c=1/2, out_c=1, use_bias=True, use_att=False, local_agg=False):
         super(HGCN, self).__init__()
 
         self.manifold = Hyperboloid()
@@ -19,13 +19,8 @@ class HGCN(nn.Module):
         self.hid_c = hid_c
         self.out_c = out_c
 
-        self.init_c = nn.Parameter(torch.Tensor([1.0]))
-        self.c2 = nn.Parameter(torch.Tensor([0.5]))
-        self.out_c = nn.Parameter(torch.Tensor([0.25]))
-        # self.c3 = nn.Parameter(torch.Tensor([2.]))
-
-        self.gc1 = HyperbolicGraphConvolution(self.manifold, nfeat+1, nhid, self.init_c, self.c2, 0.0, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
-        self.gc2 = HyperbolicGraphConvolution(self.manifold, nhid, nhid2, self.c2, self.out_c, dropout, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
+        self.gc1 = HyperbolicGraphConvolution(self.manifold, nfeat+1, nhid, self.init_c, self.hid_c, 0.0, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
+        self.gc2 = HyperbolicGraphConvolution(self.manifold, nhid, nhid2, self.hid_c, self.out_c, dropout, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
         # self.gc4 = HyperbolicGraphConvolution(self.manifold, nhid3, nout, self.out_c, self.out_c, dropout, act=None, use_bias=use_bias, use_att=use_att, local_agg=local_agg)
         self.l1 = HypLinear(self.manifold, nhid2, nout, c=self.out_c, dropout=dropout, use_bias=use_bias)
         
