@@ -93,9 +93,9 @@ $log_x^K(y) = d_L^K(x,y)\frac{y+\frac{1}{K}|x,y|_L x}{||y + \frac{1}{K} |x,y|_Lx
 
 where: 
 
-$ d_L^K(x,y) = sqrt{K} arcosh(\frac{-|x,y|_L}{K}) $ is the hyperbolic distance
+$d_L^K(x,y) = \sqrt{K} arcosh(\frac{-|x,y|_L}{K})$ is the hyperbolic distance
 
-$|x,y|_L = -x_0y_0 + \sum_{i=1}^n x_iy_i$ is the Minkowski inner product
+$|x,y|_L = -x_0y_0 + \Sigma_i^n x_iy_i$ is the Minkowski inner product (fancy term for the vector magnitude on the hyperboloid)
 
 Now you may notice two extra parameters here we haven't defined - while $v$ is our vector to map, our exponential and logarithmic maps also require a $K$ and a $x$. $K$ is merely derived from the (as we recall always negative) curvature of our space, $c = -1/K$. $x$ is however more complicated, and has to do with the nature of the logarithmic and exponential mappings themselves. 
 
