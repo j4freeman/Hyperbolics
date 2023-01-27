@@ -3,8 +3,8 @@ import torch
 import numpy as np
 
 
-def load_synthetic_data():
-    tree = nx.balanced_tree(2, 7)
+def load_synthetic_data(depth=7):
+    tree = nx.balanced_tree(2, depth)
     adj = nx.to_numpy_matrix(tree)
 
     features = np.eye(len(adj))

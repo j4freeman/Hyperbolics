@@ -37,7 +37,7 @@ else:
 print("CUDA Status is: ", device)
 
 # Load data
-adj, features, G = load_synthetic_data()
+adj, features, G = load_synthetic_data(7)
 
 paths = nx.shortest_path_length(G,0)
 
