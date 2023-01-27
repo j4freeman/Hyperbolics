@@ -51,23 +51,29 @@ Now you may be saying - well that just adds a cosine term, that's hardly useful.
 
 Now that we see we can fit the tree into a hyperbolic space, we need to question how to represent them. Representing a Euclidean space is easy enough - we percieve our world as one. An elliptic space is likewise easy, because we see plenty of spheres in our world too. Hyperbolic space is different however, it grows faster than Euclidean space, and in the same sense, the hyperbolic plane is larger than the Euclidean, even though both are infinite. 
 
-One of the earliest (and easiest to visualize) attempts at visualizing this was done by Henri Poincaré in the late 19th century. The actual maths behind the representation is again complex and past the scope of what we can cover here, but a key visualization lets us understand the exponential growth:
+<img align="right" img src='img/1024px-H2-5-4-dual.svg.png' alt='Poincaré Tesselation' width="200" height="200"/>
 
-*insert graphic of a tesselation*
+*figure out how to add a caption/citation to the img*
+
+One of the earliest (and easiest to visualize) attempts at visualizing this was done by Henri Poincaré in the late 19th century. The actual maths behind the representation is again complex and past the scope of what we can cover here, but a key visualization lets us understand the exponential growth:
 
 Critically - each colored region in the disk has the same hyperbolic area - with the center of the disk having the least density and density increasing exponentially towards the edges. 
 
 ### The Hyperboloid Model
 
-The disk model is excellent for visualizations, but the maths behind it are numerically unstable. Another model of hyperbolic geometry, the Hyperboloid model proposed by Minkowski, instead of representing the plane on a disk represents it on the upper plane of a $n+1$ dimensional hyperboloid, and if you like myself can't for the life of you remember what a hyperboloid looks like, well, here you are:
+<img align="right" img src='img/HyperboloidOfTwoSheets.png' alt='Hyperboloid' width="200" height="200"/>
 
-*insert graphic of a hyperboloid*
+The disk model is excellent for visualizations, but the maths behind it are numerically unstable. Another model of hyperbolic geometry, the Hyperboloid model proposed by Minkowski, instead of representing the plane on a disk represents it on the upper sheet of a $n+1$ dimensional hyperboloid. The $n+1$ dimensions of the hyperboloid should rightfully raise some eyebrows and shows the relation between the model and what Minkowksi is arguably most famous for - his formulation of Minkowski spacetime, indeed in a physics context this extra dimension was originally formulated to represent time. This itself has implications for how operations such as matrix norms operate on this model, but we'll touch on that later. 
+
+*figure out how to add a caption/citation to the img*
 
 ### Relating the two
 
+<img align="right" img src='img/HyperboloidProjection.png' alt='Hyperboloid - Poincaré Relation' width="200" height="200"/>
+
 As both this and the disk model represent the same thing, it seems clear there should be some mapping between the two - and indeed it's even simpler than you would expect. The disk model is merely the projection of the hyperboloid onto it's center, something again hard to visualize without a graphic: 
 
-*insert the hyperpboloid/disk mapping graphic thingy*
+*figure out how to add a caption/citation to the img*
 
 This has excellent properties for visualition - any model trained on the hyperboloid can easily be mapped to a disk for ease of visualization, something we will make extensive use of later on. 
 
