@@ -10,13 +10,13 @@ This difference, while something most of us just store and don't think much of, 
 
 Now this again at face value might seem a big claim to make: and it is - it wasn't proved rigorously until Bourgain's 1986 paper which involves a lot of lovely math and works on a Banach space (which is a superset of Euclidean space satisfying some axioms we don't really need to worry about here). Nevertheless, the proof is out there if your functional analysis is good enough to read it: no complete k-ary tree can be embedded in a Euclidean space without distorting its edge distances. 
 
-# Expand with cool visualizations about attempts to embed trees in Euclidean spaces, add citation for Bourgain
+*Expand with cool visualizations about attempts to embed trees in Euclidean spaces, add citation for Bourgain*
 
 ## Enter: Hyperbolic Geometry
 
 Luckily for us, there's far more out there than Euclidean geometry, and before you go getting scared, it's not some high fancy theoretic concept, the Earth is spherical (said to have Elliptic Geometry), which itself is not Euclidean. You can go look at most any map, and without that knowledge you'd probably be deeply confused as to why flights from San Francisco to Dubai need to go over the North Pole. Asking that question gets us to an important concept: that most concepts in Euclidean space have direct generalizations in non-Euclidean spaces. 
 
-# Expand with cool visualizations about spherical geometry and that SFO/Dubai
+*Expand with cool visualizations about spherical geometry and that SFO/Dubai*
 
 ### Geodesics
 First amongst those generalizations is that of the geodesic. A very fancy sounding word that means little more than a straight line. It should be common knowledge that if you have two points in space, the shortest distance between them (assuming no obstacles) is a straight line. Well, as we saw above, the flight path on the Earth's elliptic surface is not the same as on the Euclidean map, and that's simply because the geometry works out that way - the geodesic on elliptical geometry has its own solution (called a great circle), which has its own fancy formulas that we don't need to go into here. What we can note though, is that the formula for the distance between two points (in two dimensions for ease of example) highlights the differences between the two geometries. 
@@ -33,7 +33,7 @@ Now you may be wondering, gosh, why are the two so different? Well, it comes dow
 
 This finally brings us to what we've been building towards - hyperbolic geometry. Imagine the Earth as a perfect sphere - with some unit curvature $c$. We can then imagine the opposite of this, some surface with curvature $-c$. That is to say, if in an elliptical space the space curves down, relative to say yourself on the Earth's surface, a hyperbolic space will do much the opposite - it will curve upwards. 
 
-# again - add cool graphics
+*again - add cool graphics*
 
 ## Hyperbolic Properties
 
@@ -53,7 +53,7 @@ Now that we see we can fit the tree into a hyperbolic space, we need to question
 
 One of the earliest (and easiest to visualize) attempts at visualizing this was done by Henri Poincaré in the late 19th century. The actual maths behind the representation is again complex and past the scope of what we can cover here, but a key visualization lets us understand the exponential growth:
 
-# insert graphic of a tesselation
+*insert graphic of a tesselation*
 
 Critically - each colored region in the disk has the same hyperbolic area - with the center of the disk having the least density and density increasing exponentially towards the edges. 
 
@@ -61,13 +61,13 @@ Critically - each colored region in the disk has the same hyperbolic area - with
 
 The disk model is excellent for visualizations, but the maths behind it are numerically unstable. Another model of hyperbolic geometry, the Hyperboloid model proposed by Minkowski, instead of representing the plane on a disk represents it on the upper plane of a $n+1$ dimensional hyperboloid, and if you like myself can't for the life of you remember what a hyperboloid looks like, well, here you are:
 
-# insert graphic of a hyperboloid
+*insert graphic of a hyperboloid*
 
 ### Relating the two
 
 As both this and the disk model represent the same thing, it seems clear there should be some mapping between the two - and indeed it's even simpler than you would expect. The disk model is merely the projection of the hyperboloid onto it's center, something again hard to visualize without a graphic: 
 
-# insert the hyperpboloid/disk mapping graphic thingy
+*insert the hyperpboloid/disk mapping graphic thingy*
 
 This has excellent properties for visualition - any model trained on the hyperboloid can easily be mapped to a disk for ease of visualization, something we will make extensive use of later on. 
 
@@ -101,7 +101,15 @@ Now you may notice two extra parameters here we haven't defined - while $v$ is o
 
 Consider the Earth, which as we've discussed is not Euclidean given it's spherical nature. This would come as a surprise to a child who has yet to get an education, as to our perception the world appears quite Euclidean - we do not see this curvature around us in normal environments. That gives light to a key aspect of these spaces, the idea of a tangent space. Locally about any point on an elliptical space, the region will appear Euclidean - we refer to this as the tangent space. The fact that this tangent space is Euclidean unifies the class of spaces called manifolds, of which basic Euclidean space, elliptical, and hyperbolic spaces are all part of. That should tell us enough - if we stood in a hyperbolic space we'd observe the exact same subjective Euclidean-ness all around us. 
 
-That's all a convoluted way of motivating what $x$ actually is - $x$ is the center point at which we observe the tangent space. That is to say, for each tranformation we from the hyperbolic to Euclidean or vice versa, we must choose a point on which to center our tangent space on. 
+That's all a convoluted way of motivating what $x$ actually is - $x$ is the center point at which we observe the tangent space. That is to say, for each tranformation we from the hyperbolic to Euclidean or vice versa, we must choose a point on which to center our tangent space on. If we're not bothered with it we can just as well choose the zero point of the hyperboloid, but in general we should use the center whenever possible. 
+
+# Making Layers Hyperbolic
+
+With all that in mind, the process of making a hyperbolic neural network becomes easier than one might think. First, we project the input data to the hyperboloid via the exponential map (with the addition of a leading zero vector, recalling that the hyperboloid is a $n+1$ dimensional space with respect to the input. Following that, (almost) all operations can be done trivially by using the logarithmic map to take the data back to a Euclidean space, and applying standard Euclidean operators on it, with hyperbolic matrix multiplication of an input $x$ and some weight matrix $W$ being defined simply as $exp_0^k(Wlog_0^K(x^H))$, where $x^H$ is the $x$ when projected onto the hyperboloid. 
+
+This simple formulation holds true for any multiplication or activation function related layer - but we do run into issues with bias as addition and subtraction are not so trivially defined on the hyperboloid. Möbius addition is the generalized addition function in hyperbolic space, and to understand it we need to introduce yet another new concept: that of parallel transport. Conceptually, imagine two vectors on the Earth's surface of unit magnitude and facing due East, both another at the Equator, one at 0 degrees and one at 180 degrees longitude. Given they are both of equal magnitude and direction, we'd expect the sum of the two to be twice that of the originals in the same direction. However, lets try to imagine what we described, projecting both to a Euclidean space centered at the center of the Earth. In this projection, the two vectors, despite equal magnitude and diretion, will appear to be facing exactly opposite each other, cancelling each other out. This motivates the idea of paralell transport, where we move one of our vectors anchored to the surface of our manifold to the origin of the other, again we can visualize moving our vector at 180 longitude afross the equator while maintaining it's magnitude and direction until it reaches 0, where upon adding we'll recieve our expected result. This is the core of Möbius addition - for any addition or subtraction we need to ensure our vectors start at the same origin. 
+
+# Bringing it all together
 
 
-### add citation for Sarkar algorithm, gromov hyperbolicity, chami's HGCN
+*add citation for Sarkar algorithm, gromov hyperbolicity, chami's HGCN*
