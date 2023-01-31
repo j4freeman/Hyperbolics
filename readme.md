@@ -114,4 +114,4 @@ This simple formulation holds true for any multiplication or activation function
 
 With all the preliminaries defined, all it takes is writing up the network itself. [Chami's repo](https://github.com/HazyResearch/hgcn) is a fantastic implementation of this, and in this repository you can find a modified subset of that repo designed to be as small and readable as possible in the [minimal](https://github.com/j4freeman/Hyperbolics/tree/main/minimal) section. And to demonstrate that it all does work as we described, you can embed your own tree on your machine just by running the train script. 
 
-![Model embedding a complete binary tree of depth 7](img/final.gif)
+![Model embedding a complete binary tree of depth 7](minimal/img/final.gif)
