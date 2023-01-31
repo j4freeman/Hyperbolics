@@ -21,9 +21,9 @@ Luckily for us, there's far more out there than Euclidean geometry, and before y
 ### Geodesics
 First amongst those generalizations is that of the geodesic. A very fancy sounding word that means little more than a straight line. It should be common knowledge that if you have two points in space, the shortest distance between them (assuming no obstacles) is a straight line. Well, as we saw above, the flight path on the Earth's elliptic surface is not the same as on the Euclidean map, and that's simply because the geometry works out that way - the geodesic on elliptical geometry has its own solution (called a great circle), which has its own fancy formulas that we don't need to go into here. What we can note though, is that the formula for the distance between two points (in two dimensions for ease of example) highlights the differences between the two geometries. 
 
-$d_{Euclid}(x,y) = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$
+$$d_{Euclid}(x,y) = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$$
 
-$d_{Elliptic}(x,y) = r * arccos(sin(x_1)sin(y_1) + cos(x_1)cos(y_1)cos(x_2-y_2))$
+$$d_{Elliptic}(x,y) = r * arccos(sin(x_1)sin(y_1) + cos(x_1)cos(y_1)cos(x_2-y_2))$$
 
 Where $r$ is the radius of the sphere being computed on. So, despite vastly different formulas, these equations represent the exact same thing: the length of the shortest path between the two points on their respective surfaces. 
 
@@ -41,7 +41,7 @@ So, with all that out of the way, we can roughly conceive of what hyperbolic geo
 
 So, through all the above we've noted two things: Euclidean space isn't our only option, and trees grow exponentially, faster than Euclidean space does. As we've been going on and on about hyperbolics, it would seem natural to examine the formula for the area of a circle in a hyperbolic space: 
 
-$Area_H = \pi R^2 R (cosh(2r/R) - 1)$
+$$Area_H = \pi R^2 R (cosh(2r/R) - 1)$$
 
 Now you may be saying - well that just adds a cosine term, that's hardly useful. And if that was a standard cosine, you'd be right, but we're looking at it's hyperbolic variant which has an exceedingly interesting property, it's just a decomposition of the standard exponential: $e^x = sinh(x) + cosh(x)$ - both the hyperbolic sine and cosines are exponential curves. Given that, it becomes clear that the area of the hyperbolic space grows exponentially with its radius, just as the trees we're looking at do. 
 
@@ -72,11 +72,9 @@ This has excellent properties for visualition - any model trained on the hyperbo
 
 Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. To actually embed these trees however we need to learn some mapping, from the vertices of the tree to points in hyperbolic space. Rik Sarkar has an [excellent paper](https://homepages.inf.ed.ac.uk/rsarkar/papers/HyperbolicDelaunayFull.pdf) on a simple algorithm to do this for an arbitrary (complete) tree, but the method is restricted to abstract structures - ie if we have a nearly complete binary tree but one node has an extra child, the process breaks down. It also considers purely minimizing distortion of the tree - which again in an abstract case is useful but in the real world there's often other characteristics to consider. Additionally there are many use cases where a given graph may exhibit some properties of a tree but not be perfectly so - an aspect well studied and typically measured by [Gromov's delta-hyperbolicity](https://www.ihes.fr/~gromov/wp-content/uploads/2018/08/657.pdf) which seeks to define to what extent a given space (or graph) is hyperbolic by measuring, for any four points $x, y, z, w$ in that space: 
 
-$(x, z)_w >= min((x,y)_w, (y,z)_w) - \delta$
+$$(x, z)_w >= min((x,y)_w, (y,z)_w) - \delta$$
 
-such that: $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z)). $
-
-Which also previews an alternative definition based on the triangle inequality, but again the math becomes more obsucre. 
+such that $(a,b)_c = 1/2(d(x,y) + d(x,z) - d(y,z))$. This also previews an alternative definition based on the triangle inequality, but again the math becomes more obsucre. 
 
 With all that in mind, lets assume we have some tree structure and want to embed it to a hyperbolic space. While at first glance you might say great, lets just use a hyperbolic distance metric on a standard autoencoder architecture and call it a day, that runs into an issue right away: Euclidean features, coordinate systems, or what have you need to be mapped to their Hyperbolic equivalents. [Chami et al's fantastic paper](https://arxiv.org/pdf/1910.12933.pdf) covers them all in detail, but here we'll still try to describe some of the key steps. 
 
@@ -84,15 +82,11 @@ With all that in mind, lets assume we have some tree structure and want to embed
 
 We can map arbitrary features from Euclidean to Hyperbolic spaces and vice versa by two mappings: the exponential map which maps from Euclidean to Hyperbolic spaces, and the logarithmic map which does the opposite. In the case of the hyperboloid model those are (in the syntax used by Chami): 
 
-$exp_x^K(v) = cosh(\frac{||v||_L}{\sqrt{K}})x + \sqrt{K} sinh(\frac{||v||_L}{\sqrt{K}})\frac{v}{||v||_L}$
+$$exp_x^K(v) = cosh(\frac{||v||_L}{\sqrt{K}})x + \sqrt{K} sinh(\frac{||v||_L}{\sqrt{K}})\frac{v}{||v||_L}$$
 
-$log_x^K(y) = d_L^K(x,y)\frac{y+\frac{1}{K}|x,y|_L x}{||y + \frac{1}{K} |x,y|_Lx||_L}$
+$$log_x^K(y) = d_L^K(x,y)\frac{y+\frac{1}{K}|x,y|_L x}{||y + \frac{1}{K} |x,y|_Lx||_L}$$
 
-where: 
-
-$d_L^K(x,y) = \sqrt{K} arcosh(\frac{-|x,y|_L}{K})$ is the hyperbolic distance
-
-$|x,y|_L = -x_0y_0 + \Sigma_i^n x_iy_i$ is the Minkowski inner product (fancy term for the vector magnitude on the hyperboloid)
+where $d_L^K(x,y) = \sqrt{K} arcosh(\frac{-|x,y|_L}{K})$ is the hyperbolic distance, and $|x,y|_L = -x_0y_0 + \Sigma_i^n x_iy_i$ is the Minkowski inner product (fancy term for the vector magnitude on the hyperboloid). 
 
 Now you may notice two extra parameters here we haven't defined - while $v$ is our vector to map, our exponential and logarithmic maps also require a $K$ and a $x$. $K$ is merely derived from the (as we recall always negative) curvature of our space, $c = -1/K$. $x$ is however more complicated, and has to do with the nature of the logarithmic and exponential mappings themselves. 
 
