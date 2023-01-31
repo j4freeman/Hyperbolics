@@ -14,7 +14,7 @@ Now this again at face value might seem a big claim to make: and it is - it wasn
 
 ## Enter: Hyperbolic Geometry
 
-<img align="right" img src='sfo-to-dxb.png' alt='SFO -> DXB flight path' width="200" height="175"/>
+<img align="right" img src='img/sfo-to-dxb.png' alt='SFO -> DXB flight path' width="200" height="150"/>
 
 Luckily for us, there's far more out there than Euclidean geometry, and before you go getting scared, it's not some high fancy theoretic concept, the Earth is spherical (said to have Elliptic Geometry), which itself is not Euclidean. You can go look at most any map, and without that knowledge you'd probably be deeply confused as to why flights from San Francisco to Dubai need to go over the North Pole. Asking that question gets us to an important concept: that most concepts in Euclidean space have direct generalizations in non-Euclidean spaces. 
 
