@@ -86,7 +86,7 @@ $$exp_x^K(v) = cosh(\frac{||v||_L}{\sqrt{K}})x + \sqrt{K} sinh(\frac{||v||_L}{\s
 
 $$log_x^K(y) = d_L^K(x,y)\frac{y+\frac{1}{K}|x,y|_L x}{||y + \frac{1}{K} |x,y|_Lx||_L}$$
 
-where $d_L^K(x,y) = \sqrt{K} arcosh(\frac{-|x,y|_L}{K})$ is the hyperbolic distance, and $|x,y|_L = -x_0y_0 + \Sigma_i^n x_iy_i$ is the Minkowski inner product (fancy term for the vector magnitude on the hyperboloid). 
+where $d_L^K(x,y) = \sqrt{K} arcosh(\frac{-\vert x,y\vert _L}{K})$ is the hyperbolic distance, and $\vert x,y\vert _L = -x_0y_0 + \Sigma_i^n x_iy_i$ is the Minkowski inner product (fancy term for the vector magnitude on the hyperboloid). 
 
 Now you may notice two extra parameters here we haven't defined - while $v$ is our vector to map, our exponential and logarithmic maps also require a $K$ and a $x$. $K$ is merely derived from the (as we recall always negative) curvature of our space, $c = -1/K$. $x$ is however more complicated, and has to do with the nature of the logarithmic and exponential mappings themselves. 
 
