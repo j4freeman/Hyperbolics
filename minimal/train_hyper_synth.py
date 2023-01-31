@@ -2,6 +2,8 @@ import time
 import numpy as np
 import os
 import torch
+from natsort import natsorted
+import imageio
 import torch.optim as optim
 import networkx as nx
 import torch.nn as nn
@@ -43,14 +45,14 @@ paths = nx.shortest_path_length(G,0)
 
 colors = [x[1] for x in paths.items()]
 
-init_c = nn.Parameter(torch.Tensor([1.0]), requires_grad=False)
+init_c = nn.Parameter(torch.Tensor([0.75]), requires_grad=False)
 hid_c = nn.Parameter(torch.Tensor([0.5]), requires_grad=False)
 out_c = nn.Parameter(torch.Tensor([0.25]), requires_grad=False)
 
 # Model and optimizer
 model = HGCN(nfeat=features.shape[1],
-            nhid=32,
-            nhid2=64,
+            nhid=8,
+            nhid2=32,
             nout=3,
             dropout=0.1,
             init_c=init_c,
@@ -79,14 +81,18 @@ ax = fig.add_subplot(111)
 
 epochs = 500
 
-optimizer = optim.Adam(model.parameters(), lr=5e-3, weight_decay=1e-5)
+optimizer = optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-5)
+
+gamma = 0.1**(1/epochs)
+
+scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
 
 for epoch in range(epochs):
 
     t = time.time()
     model.train()
     optimizer.zero_grad()
-    output, k = model(features, adj) 
+    output = model(features, adj) 
 
     x_1 = output.repeat(output.size(0),1)
     x_2 = output.repeat_interleave(output.size(0),0)
@@ -101,10 +107,11 @@ for epoch in range(epochs):
 
     loss.backward()
     optimizer.step()
+    scheduler.step()
 
     if epoch%25 == 0 or epoch == epochs - 1:
       model.eval()
-      output, k = model(features, adj) 
+      output = model(features, adj) 
       plt.gca().add_patch(plt.Circle((0, 0), 1/model.out_c.item(), color='black', fill=False))
       plt.title("Epoch: " + str(epoch))
       
@@ -125,13 +132,23 @@ for epoch in range(epochs):
         continue
       print('Epoch: {:04d}'.format(epoch),
           'Loss_Avg: {:.5f}'.format(sum(loss_list[-25:]) / 25),
-          'Time: {:.4f}s'.format(time.time() - t),
+          'Time_Spot: {:.4f}s'.format(time.time() - t),
           'C1: {:.2f}'.format(model.init_c.item()),
           'C2: {:.2f}'.format(model.hid_c.item()),
           'C3: {:.2f}'.format(model.out_c.item()),
           'Grd: {:.2f}'.format(sum([param.grad.abs().sum() if param.grad is not None else 0 for _, param in model.named_parameters()])),
           )
 
+images = []
+for file_name in natsorted(os.listdir("img")):
+      file_path = os.path.join("img", file_name)
+      images.append(imageio.imread(file_path))
+
+for _ in range(10):
+    images.append(imageio.imread(file_path))
+
+imageio.mimsave('img/final.gif', images, duration=0.5)
+
 print("Optimization Finished!")
 print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
-print((fermi_dirac - adj).abs().sum().item())
+# print((fermi_dirac - adj).abs().sum().item())

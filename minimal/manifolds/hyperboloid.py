@@ -36,8 +36,7 @@ class Hyperboloid(Manifold):
         theta = torch.clamp(-prod / K, min=1.0 + self.eps[x.dtype])
         sqdist = K * arcosh(theta) ** 2
         # clamp distance to avoid nans in Fermi-Dirac decoder
-        # return sqdist
-        return torch.clamp(sqdist, min=1e-15, max=50.0)
+        return torch.clamp(sqdist, max=50.0)
 
     def proj(self, x, c):
         K = 1. / c

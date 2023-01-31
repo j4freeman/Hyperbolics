@@ -79,28 +79,19 @@ class HypLinear(nn.Module):
 
     def reset_parameters(self):
         init.xavier_normal_(self.weight, gain=math.sqrt(2))
-        # init.normal_(self.bias, std=0.1)
         init.ones_(self.bias)
 
     def forward(self, x):
-        # print(x.max())
         drop_weight = F.dropout(self.weight, self.dropout, training=self.training)
         mv = self.manifold.mobius_matvec(drop_weight, x, self.c)
-        # print(drop_weight[:5])
-        # print(mv[:5])
-        # res = self.manifold.proj(mv, self.c)
         if self.use_bias:
             bias = self.manifold.proj_tan0(self.bias.view(1, -1), self.c)
             hyp_bias = self.manifold.expmap0(bias, self.c)
             hyp_bias = self.manifold.proj(hyp_bias, self.c)
             res = self.manifold.mobius_add(mv, hyp_bias, c=self.c)
-            # print(res[:5])
         else:
             res = mv
         res = self.manifold.proj(res, self.c)
-        # print(res[:5])
-        # res = torch.clamp(res, min=-1e7, max=1e7) # screams of torment
-        # print(res.max().item(), res.abs().sum().item(), "=====================")
         return res
 
     def extra_repr(self):

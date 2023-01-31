@@ -41,5 +41,4 @@ class HGCN(nn.Module):
         out = self.layers.forward(input)
         out = self.l1.forward(out[0])
         
-
-        return (out, adj)
+        return out
