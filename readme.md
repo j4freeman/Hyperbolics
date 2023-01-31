@@ -1,4 +1,4 @@
-# Exploring Hyperbolic Geometry (as a Computer Scientist)
+# A Gentle Introduction to Hyperbolic Neural Networks
 
 Always been a fan of the whole "if you can't explain it, you don't understand it" line of thinking, and as I've spent some time trying to wrap my head around hyperbolic geometry and its application to graph embeddings as of late, figured might as well make a git page about it. 
 
