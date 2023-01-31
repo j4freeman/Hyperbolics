@@ -33,8 +33,6 @@ Now you may be wondering, gosh, why are the two so different? Well, it comes dow
 
 This finally brings us to what we've been building towards - hyperbolic geometry. Imagine the Earth as a perfect sphere - with some unit curvature $c$. We can then imagine the opposite of this, some surface with curvature $-c$. That is to say, if in an elliptical space the space curves down, relative to say yourself on the Earth's surface, a hyperbolic space will do much the opposite - it will curve upwards. 
 
-*again - add cool graphics*
-
 ## Hyperbolic Properties
 
 So, with all that out of the way, we can roughly conceive of what hyperbolic geometry is. Now the questions become - why is it useful? And if it is, how do we represent something we can barely visualize? Both, luckily for us, are deeply well studied. 
@@ -70,7 +68,7 @@ As both the hyperboloid and the disk models represent the same thing, it seems c
 
 This has excellent properties for visualition - any model trained on the hyperboloid can easily be mapped to a disk for ease of visualization, something we will make extensive use of later on. 
 
-## Hyperbolic Neural Networks
+# Hyperbolic Neural Networks
 
 Now all this is well and good, we've described the movitation for using hyperbolic spaces as well as what they are in the first place. What we've largely neglected is just how annoying they are in general - we don't usually get nice convenient easy to remember formulas, and visualization and intuition is largely a pain. To actually embed these trees however we need to learn some mapping, from the vertices of the tree to points in hyperbolic space. Rik Sarkar has an [excellent paper](https://homepages.inf.ed.ac.uk/rsarkar/papers/HyperbolicDelaunayFull.pdf) on a simple algorithm to do this for an arbitrary (complete) tree, but the method is restricted to abstract structures - ie if we have a nearly complete binary tree but one node has an extra child, the process breaks down. It also considers purely minimizing distortion of the tree - which again in an abstract case is useful but in the real world there's often other characteristics to consider. Additionally there are many use cases where a given graph may exhibit some properties of a tree but not be perfectly so - an aspect well studied and typically measured by [Gromov's delta-hyperbolicity](https://www.ihes.fr/~gromov/wp-content/uploads/2018/08/657.pdf) which seeks to define to what extent a given space (or graph) is hyperbolic by measuring, for any four points $x, y, z, w$ in that space: 
 
@@ -82,7 +80,7 @@ Which also previews an alternative definition based on the triangle inequality, 
 
 With all that in mind, lets assume we have some tree structure and want to embed it to a hyperbolic space. While at first glance you might say great, lets just use a hyperbolic distance metric on a standard autoencoder architecture and call it a day, that runs into an issue right away: Euclidean features, coordinate systems, or what have you need to be mapped to their Hyperbolic equivalents. [Chami et al's fantastic paper](https://arxiv.org/pdf/1910.12933.pdf) covers them all in detail, but here we'll still try to describe some of the key steps. 
 
-# Euclidean <-> Hyperbolic Maps
+## Euclidean <-> Hyperbolic Maps
 
 We can map arbitrary features from Euclidean to Hyperbolic spaces and vice versa by two mappings: the exponential map which maps from Euclidean to Hyperbolic spaces, and the logarithmic map which does the opposite. In the case of the hyperboloid model those are (in the syntax used by Chami): 
 
@@ -102,11 +100,18 @@ Consider the Earth, which as we've discussed is not Euclidean given it's spheric
 
 That's all a convoluted way of motivating what $x$ actually is - $x$ is the center point at which we observe the tangent space. That is to say, for each tranformation we from the hyperbolic to Euclidean or vice versa, we must choose a point on which to center our tangent space on. If we're not bothered with it we can just as well choose the zero point of the hyperboloid, but in general we should use the center whenever possible. 
 
-# Making Layers Hyperbolic
+## Making Layers Hyperbolic
 
 With all that in mind, the process of making a hyperbolic neural network becomes easier than one might think. First, we project the input data to the hyperboloid via the exponential map (with the addition of a leading zero vector, recalling that the hyperboloid is a $n+1$ dimensional space with respect to the input. Following that, (almost) all operations can be done trivially by using the logarithmic map to take the data back to a Euclidean space, and applying standard Euclidean operators on it, with hyperbolic matrix multiplication of an input $x$ and some weight matrix $W$ being defined simply as $exp_0^k(Wlog_0^K(x^H))$, where $x^H$ is the $x$ when projected onto the hyperboloid. 
 
+### Hyperbolic Addition
+
+<img align="right" img src='img/1200px-Parallel_transport_sphere.svg.png' alt='Parallel Transport' width="200" height="200"/>
+
 This simple formulation holds true for any multiplication or activation function related layer - but we do run into issues with bias as addition and subtraction are not so trivially defined on the hyperboloid. Möbius addition is the generalized addition function in hyperbolic space, and to understand it we need to introduce yet another new concept: that of parallel transport. Conceptually, imagine two vectors on the Earth's surface of unit magnitude and facing due East, both another at the Equator, one at 0 degrees and one at 180 degrees longitude. Given they are both of equal magnitude and direction, we'd expect the sum of the two to be twice that of the originals in the same direction. However, lets try to imagine what we described, projecting both to a Euclidean space centered at the center of the Earth. In this projection, the two vectors, despite equal magnitude and diretion, will appear to be facing exactly opposite each other, cancelling each other out. This motivates the idea of paralell transport, where we move one of our vectors anchored to the surface of our manifold to the origin of the other, again we can visualize moving our vector at 180 longitude afross the equator while maintaining it's magnitude and direction until it reaches 0, where upon adding we'll recieve our expected result. This is the core of Möbius addition - for any addition or subtraction we need to ensure our vectors start at the same origin. 
 
-# Bringing it all together
+## Bringing it all together
 
+With all the preliminaries defined, all it takes is writing up the network itself. [Chami's repo](https://github.com/HazyResearch/hgcn) is a fantastic implementation of this, and in this repository you can find a modified subset of that repo designed to be as small and readable as possible in the [minimal](https://github.com/j4freeman/Hyperbolics/tree/main/minimal) section. And to demonstrate that it all does work as we described, you can embed your own tree on your machine just by running the train script. 
+
+![Model embedding a complete binary tree of depth 7](img/final.gif)
