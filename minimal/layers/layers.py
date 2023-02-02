@@ -79,7 +79,7 @@ class HypLinear(nn.Module):
 
     def reset_parameters(self):
         init.xavier_normal_(self.weight, gain=math.sqrt(2))
-        init.ones_(self.bias)
+        init.normal_(self.bias)
 
     def forward(self, x):
         drop_weight = F.dropout(self.weight, self.dropout, training=self.training)

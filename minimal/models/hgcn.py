@@ -18,13 +18,18 @@ class HGCN(nn.Module):
         self.hid_c = hid_c
         self.out_c = out_c
 
-        self.gc1 = HyperbolicGraphConvolution(self.manifold, nfeat+1, nhid, self.init_c, self.hid_c, 0.0, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
+        n_embed = 64
+
+        self.embed = nn.Linear(nfeat, n_embed-1)
+
+        self.gc1 = HyperbolicGraphConvolution(self.manifold, n_embed, nhid, self.init_c, self.hid_c, dropout, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
         self.gc2 = HyperbolicGraphConvolution(self.manifold, nhid, nhid2, self.hid_c, self.out_c, dropout, act=nn.ReLU(), use_bias=use_bias, use_att=use_att, local_agg=local_agg)
         self.l1 = HypLinear(self.manifold, nhid2, nout, c=self.out_c, dropout=dropout, use_bias=use_bias)
         
         self.layers = nn.Sequential(self.gc1, self.gc2)
 
     def encode(self, x):
+        x = self.embed.forward(x)
         o = torch.zeros_like(x)
         x = torch.cat([o[:, 0:1], x], dim=1)
 

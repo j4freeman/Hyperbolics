@@ -41,20 +41,22 @@ print("CUDA Status is: ", device)
 # Load data
 adj, features, G = load_synthetic_data(7)
 
+print("Num nodes: ", features.shape[0])
+
 paths = nx.shortest_path_length(G,0)
 
 colors = [x[1] for x in paths.items()]
 
-init_c = nn.Parameter(torch.Tensor([0.75]), requires_grad=False)
-hid_c = nn.Parameter(torch.Tensor([0.5]), requires_grad=False)
-out_c = nn.Parameter(torch.Tensor([0.25]), requires_grad=False)
+init_c = nn.Parameter(torch.Tensor([1.0]), requires_grad=True)
+hid_c = nn.Parameter(torch.Tensor([1.0]), requires_grad=True)
+out_c = nn.Parameter(torch.Tensor([1.0]), requires_grad=False)
 
 # Model and optimizer
 model = HGCN(nfeat=features.shape[1],
-            nhid=8,
-            nhid2=32,
+            nhid=32,
+            nhid2=16,
             nout=3,
-            dropout=0.1,
+            dropout=0.05,
             init_c=init_c,
             hid_c=hid_c,
             out_c=out_c)
@@ -64,6 +66,8 @@ model = model.to(device)
 adj = adj.to(device)
 features = features.to(device)
 
+print("Model has:", sum(p.numel() for p in model.parameters() if p.requires_grad), "parameters")
+
 adj_list = []
 
 for idx1, row in enumerate(adj):
@@ -71,6 +75,7 @@ for idx1, row in enumerate(adj):
       if v == 1 and idx2 >= idx1:
         adj_list.append((idx1, idx2))
 
+print("Graph has:", len(adj_list), "Edges")
 
 # Train model
 t_total = time.time()
@@ -83,7 +88,7 @@ epochs = 500
 
 optimizer = optim.Adam(model.parameters(), lr=1e-2, weight_decay=1e-5)
 
-gamma = 0.1**(1/epochs)
+gamma = 0.01**(1/epochs)
 
 scheduler = optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
 
